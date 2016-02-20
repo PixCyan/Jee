@@ -1,0 +1,19 @@
+table {
+  border-collapse: collapse;
+}
+
+td {
+	border: solid 2px black;
+	width: 200px;
+	height: 20px;
+}
+
+img {
+	width : 20px;
+}
+
+
+.celModif {
+	border : none;
+	padding-left : 20px;
+}

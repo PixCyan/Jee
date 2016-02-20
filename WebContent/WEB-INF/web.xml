@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>projetEtape4</display-name>
+
+	<!--  fichiers d'accueil -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- Titre de l'application -->
+	<context-param>
+		<param-name>title</param-name>
+		<param-value>Gestion des étudiants</param-value>
+	</context-param>
+	
+	<!-- URLs communes aux vues -->
+	<context-param>
+		<param-name>entetedepage</param-name>
+		<param-value>/WEB-INF/JSP/commun/enTeteDePage.jsp</param-value>
+	</context-param>
+	<context-param>
+		<param-name>pieddepage</param-name>
+		<param-value>/WEB-INF/JSP/commun/piedDePage.jsp</param-value>
+	</context-param>
+
+	<!--  Servlet : traitementDetail -->
+	<servlet>
+		<servlet-name>controleur</servlet-name>
+		<servlet-class>projetEtape4.Controleur</servlet-class>
+		<init-param>
+			<param-name>details</param-name>
+			<param-value>/WEB-INF/JSP/etudiants/ficheEtudiant.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>detailsGroupe</param-name>
+			<param-value>/WEB-INF/JSP/groupes/detailsGroupe.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>notes</param-name>
+			<param-value>/WEB-INF/JSP/notes/consultationNotes.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>absences</param-name>
+			<param-value>/WEB-INF/JSP/absences/consultationAbsences.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>all</param-name>
+			<param-value>/WEB-INF/JSP/etudiants/all.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>groupes</param-name>
+			<param-value>/WEB-INF/JSP/groupes/consultationGroupes.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>accueil</param-name>
+			<param-value>/WEB-INF/JSP/commun/accueil.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>template</param-name>
+			<param-value>/WEB-INF/JSP/gestionTemplate.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>modifierAbs</param-name>
+			<param-value>/WEB-INF/JSP/absences/modifierAbsences.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>confirmationModification</param-name>
+			<param-value>/WEB-INF/JSP/commun/confirmationModification.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>consultationModules</param-name>
+			<param-value>/WEB-INF/JSP/modules/consultationModules.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>modulesGroupe</param-name>
+			<param-value>/WEB-INF/JSP/modules/modulesGroupe.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>modifierNotes</param-name>
+			<param-value>/WEB-INF/JSP/notes/modifierNotes.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ajouterNote</param-name>
+			<param-value>/WEB-INF/JSP/notes/ajouterNote.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ajouterModule</param-name>
+			<param-value>/WEB-INF/JSP/modules/ajouterModule.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ajouterEtudiant</param-name>
+			<param-value>/WEB-INF/JSP/etudiants/ajouterEtudiant.jsp</param-value>
+		</init-param>
+	</servlet>
+	
+	<!-- Mapping URL/Servlet -->
+	<servlet-mapping>
+		<servlet-name>controleur</servlet-name>
+		<url-pattern>/do/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

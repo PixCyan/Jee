@@ -1,0 +1,31 @@
+<%@ page import="projetEtape4.Groupe"%>
+<div class="row">
+	<div class="col-lg-12">
+		<!--  récupération des données -->
+		<jsp:useBean id="groupes" type="java.util.Collection<Groupe>" scope="request"/>
+		
+		<h3>Créer un nouvel étudiant</h3>
+		
+		<form action="confirmationModification">
+			<div class="form-group">
+				<label> Nom de l'étudiant : </label>
+				<input class="form-control" type="text" name="nom" value="" placeholder="Dupont"/>
+		 	</div>
+			<div class="form-group">
+				<label> Note : </label>
+				<input class="form-control" type="text" name="prenom" value="" placeholder="Damien"/>
+		 	</div>
+		
+			<div class="form-group">
+				<label>Groupes </label>
+				<SELECT name="groupe" size="<%= 1 %>">
+							<% for(Groupe groupe : groupes){ %>
+							<OPTION value="<%= groupe.getId() %>"> <%= groupe.getNom() %>
+							<% } %>				
+							</SELECT>
+			</div>
+		
+			<button class="btn btn-default" type="submit"> Créer l'étudiant </button>
+		</form>
+	</div>
+</div>
