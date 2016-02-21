@@ -267,7 +267,9 @@ public class Controleur extends HttpServlet{
 			EtudiantDAO.addNote(sujetNote, Integer.parseInt(note), module, etu);
 			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
-		} else if(request.getParameter("prenom") != null) {
+		} else if(request.getParameter("prenom") != null && !request.getParameter("prenom").isEmpty()
+				&& request.getParameter("nom") != null && !request.getParameter("nom").isEmpty()
+				&& request.getParameter("groupe") != null && !request.getParameter("groupe").isEmpty()) {
 			String nom = request.getParameter("nom");
 			String prenom = request.getParameter("prenom");
 			String id = request.getParameter("groupe");
@@ -276,22 +278,27 @@ public class Controleur extends HttpServlet{
 			EtudiantDAO.create(prenom, nom, groupe);
 			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
-		} else if(request.getParameter("nomModule") != null) {
-			String nomModule = request.getParameter("nomModule");
-			String description = request.getParameter("description");
-			String coeff = request.getParameter("coeff");
-			List<Groupe> groupes = GroupeDAO.getAll();
-			Module module = ModuleDAO.create(nomModule, description, Integer.parseInt(coeff));
-			List<Groupe> groups = new ArrayList<>();
-			for(Groupe g : groupes) {
-				if(request.getParameter(g.getNom()) != null) {
-					Groupe gr = GroupeDAO.retrieveById(Integer.parseInt(request.getParameter(g.getNom())));
-					groups.add(gr);
+		} else if(request.getParameter("nomModule") != null && !request.getParameter("nomModule").isEmpty()
+				&& request.getParameter("description") != null && !request.getParameter("description").isEmpty()
+				&& request.getParameter("coeff") != null && !request.getParameter("coeff").isEmpty()) {
+			List<Groupe> groupes = new ArrayList<>();
+			for(Groupe g : GroupeDAO.getAll()) {
+				if(request.getParameter(g.getNom()) != null && !request.getParameter(g.getNom()).isEmpty()) {
+					groupes.add(g);
 				}
-			}	
-			ModuleDAO.addGroupes(groups, module);
-			request.setAttribute("warning", "");
-			request.setAttribute("modif", true);
+			}
+			if(groupes.isEmpty()) {
+				request.setAttribute("warning", "Vous n'avez sélectionné aucun groupe pour ce module !");
+				request.setAttribute("modif", false);
+			} else {
+				String nomModule = request.getParameter("nomModule");
+				String description = request.getParameter("description");
+				String coeff = request.getParameter("coeff");
+				Module module = ModuleDAO.create(nomModule, description, Integer.parseInt(coeff));
+				ModuleDAO.addGroupes(groupes, module);
+				request.setAttribute("warning", "");
+				request.setAttribute("modif", true);
+			}
 		} else if(request.getParameter("removeEtu") != null) {
 			String id = request.getParameter("removeEtu");
 			EtudiantDAO.remove(Integer.parseInt(id));

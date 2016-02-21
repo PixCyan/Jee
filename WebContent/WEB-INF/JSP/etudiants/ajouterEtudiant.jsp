@@ -8,11 +8,11 @@
 		<p class="alert alert-warning"> Attention : Le choix du groupe est définitif, une fois l'étudiant créé vous ne pourrez pas le changer de groupe.</p>
 		<form action="confirmationModification">
 			<div class="form-group">
-				<label> Nom de l'étudiant : </label>
+				<label> Nom : </label>
 				<input class="form-control" type="text" name="nom" value="" placeholder="Dupont"/>
 		 	</div>
 			<div class="form-group">
-				<label> Note : </label>
+				<label> Prénom : </label>
 				<input class="form-control" type="text" name="prenom" value="" placeholder="Damien"/>
 		 	</div>
 			<div class="form-group">
