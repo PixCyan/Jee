@@ -8,7 +8,7 @@
 	<div class="col-lg-12">
 		<article class="panel-heading">
 			<h3> Modules </h3>
-			<a href="<%= getServletContext().getContextPath()%>/do/ajouterModule">Créer un module</a>
+			<button class="btn btn-primary" onclick="location.href='<%= getServletContext().getContextPath()%>/do/ajouterModule'">Créer un module</button>
 		</article>
 			<article class="panel-body">
 				<table class="table table-striped table-bordered table-hover dataTable no-footer">

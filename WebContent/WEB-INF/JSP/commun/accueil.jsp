@@ -11,13 +11,13 @@
 		<h2> Accueil </h2>
 		<div class="alert alert-success">
 			<p> Bienvenue, </br>
-			Cette page affiche les étudiants, les groupes et les modules disponubles sur l'application. </br>
+			Cette page affiche les étudiants, les groupes et les modules disponibles sur l'application. </br>
 			Utilisez le menu pour avoir accès à toutes les options. </p>
 		</div>
 	</article>
 </div>	
 <div class="row">
-	<article class="col-lg-9">
+	<article class="col-lg-7">
 		<!-- Affichage réduit des étudiants -->
 		<article class="panel-heading">
 			<h3> Liste des étudiants</h3>

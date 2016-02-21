@@ -7,7 +7,7 @@
 	<div class="col-lg-12">
 		<article class="panel-heading">
 			<h3> Groupes </h3>
-			<a href="<%= getServletContext().getContextPath()%>/do/ajouterGroupe">Créer un groupe</a>
+			<button class="btn btn-primary" onclick="location.href='<%= getServletContext().getContextPath()%>/do/ajouterGroupe'">Créer un groupe</button>
 		</article>
 		<article class="panel-body">
 			<table class="table table-striped table-bordered table-hover dataTable no-footer">

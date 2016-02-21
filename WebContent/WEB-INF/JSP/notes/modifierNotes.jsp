@@ -11,7 +11,7 @@
 		<article class="panel-heading">
 			<h3> Modification des notes de <%= etudiant.getNom() + " " +  etudiant.getPrenom()  %></h3>
 			
-			<a href="<%= getServletContext().getContextPath()%>/do/ajouterNote?id=<%= etudiant.getId() %>"">Ajouter une note</a>
+			<button class="btn btn-primary" onclick="location.href='<%= getServletContext().getContextPath()%>/do/ajouterNote?id=<%= etudiant.getId() %>'">Ajouter une note</button>
 		</article>
 		<div class="panel-body">
 			<table class="table table-striped table-bordered table-hover dataTable no-footer">

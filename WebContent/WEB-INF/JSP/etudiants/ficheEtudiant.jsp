@@ -15,7 +15,7 @@
 			<table class="table table-striped table-bordered table-hover dataTable no-footer">
 						<tr><td> Nom </td><td><%= etudiant.getNom() %> </td></tr>
 						<tr><td>Prénom</td><td><%= etudiant.getPrenom() %></td></tr>
-						<tr><td> Absences </td><td><a href="<%= getServletContext().getContextPath()%>/do/detailsGroupe?id=<%= etudiant.getGroupe().getId() %>"><%= etudiant.getGroupe().getNom() %></a> </td></tr>
+						<tr><td> Groupe </td><td><a href="<%= getServletContext().getContextPath()%>/do/detailsGroupe?id=<%= etudiant.getGroupe().getId() %>"><%= etudiant.getGroupe().getNom() %></a> </td></tr>
 						<tr><td> Moyenne </td><td> <%= etudiant.calculerMoyenne() %></td></tr>
 						<tr><td> Absences </td><td><%= etudiant.getAbs() %> </td></tr>
 				</table>

@@ -5,8 +5,6 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		
-		
 		<article class="panel-heading">
 			<h3> Liste des étudiants</h3>
 			<a href="<%= getServletContext().getContextPath()%>/do/ajouterEtudiant">Créer un étudiant</a>
@@ -26,11 +24,8 @@
 						<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/confirmationModification?removeEtu=<%= etu.getId() %>"> Supprimer </a></td>
 						<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/modifierEtudiant?id=<%= etu.getId() %>"> Modifier </a></td></tr>
 					<% } %>
+					<tr><td> Moyenne du groupe </td> <td> <%if(nbNote != 0) { %> <%= moyenne/nbNote %> <% } %></td></tr>
 			</table>
-			
-			<div> 
-				<p> Moyenne générale : <%= moyenne/nbNote %></p>
-			</div>
 		</div>
 	</div>
 </div>

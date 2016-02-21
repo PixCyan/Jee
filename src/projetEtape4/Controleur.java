@@ -138,6 +138,8 @@ public class Controleur extends HttpServlet{
 			showModifierNote(request, response);
 		} else if(methode.equals("get") && action.equals("/ajouterGroupe")) {
 			showAjouterGroupe(request, response);
+		} else if(methode.equals("get") && action.equals("/modifAbs")) {
+			showTraitementAbs(request, response);
 		}
 	}
 	
@@ -236,29 +238,17 @@ public class Controleur extends HttpServlet{
 		loadJSP(urlTemplate, request, response);
 	}
 	
-	private void showModifierAbs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void showTraitementAbs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getParameter("abs") != null && !request.getParameter("abs").isEmpty()) {
 			int id = Integer.parseInt(request.getParameter("id"));
 			int absence = Integer.parseInt(request.getParameter("abs"));
 			if(absence == 1) {
-				EtudiantDAO.addAbsences(id, absence);
+				EtudiantDAO.addAbsences(id, 1);
 			} else {
-				EtudiantDAO.removeAbsences(id, absence);
+				EtudiantDAO.removeAbsences(id, 1);
 			}
-			/*EntityManager em = GestionFactory.factory.createEntityManager();
-			em.getTransaction().begin();
-			Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(id));
-			etudiant.setNbAbsences(Integer.parseInt(request.getParameter("abs")));
-			em.merge(etudiant);
-			// Commit
-			em.getTransaction().commit();
-			// Close the entity manager
-			em.close();*/
-			request.setAttribute("content", urlConfirmationModification);
-			// Transfert le controle à une autre servlet
-			loadJSP(urlTemplate, request, response);
+			showModifierAbsences(request, response);
 		}
-		
 	}
 		
 	private void showConfirmationModif(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -434,7 +424,7 @@ public class Controleur extends HttpServlet{
 		String id = request.getParameter("id");
 		Groupe groupe = GroupeDAO.retrieveById(Integer.parseInt(id));
 		List<Etudiant> etudiants  = groupe.getEtudiants();
-		
+
 		request.setAttribute("groupe", groupe);	
 		request.setAttribute("etudiants", etudiants);
 		request.setAttribute("content", urlDetailsGroupe);

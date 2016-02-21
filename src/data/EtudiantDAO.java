@@ -90,17 +90,11 @@ public class EtudiantDAO {
 	}
 	
 	public static Etudiant removeAbsences(int id, int absencesAAjouter) {
-		
 		// Creation de l'entity manager
 		EntityManager em = GestionFactory.factory.createEntityManager();
-		
 		// Find
 		Etudiant etudiant = em.find(Etudiant.class, id);
-		
-		//
 		em.getTransaction().begin();
-
-		//
 		int absencesInitiales = etudiant.getAbs();
 		etudiant.setNbAbsences(absencesInitiales - absencesAAjouter);
 		
