@@ -94,6 +94,10 @@
 			<param-name>ajouterEtudiant</param-name>
 			<param-value>/WEB-INF/JSP/etudiants/ajouterEtudiant.jsp</param-value>
 		</init-param>
+		<init-param>
+			<param-name>modifierEtudiant</param-name>
+			<param-value>/WEB-INF/JSP/etudiants/modifierEtudiant.jsp</param-value>
+		</init-param>
 	</servlet>
 	
 	<!-- Mapping URL/Servlet -->

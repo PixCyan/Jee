@@ -21,7 +21,10 @@
 					moyenne += etu.calculerMoyenne();
 					nbNote ++; %>
 						<tr><td><a href="<%= getServletContext().getContextPath()%>/do/details?id=<%= etu.getId() %>"> <%= etu.getNom() + " " + etu.getPrenom() %> </a> </td><td> <%= etu.calculerMoyenne() %> </td>
-						<td> <a href="<%= getServletContext().getContextPath()%>/do/detailsGroupe?id=<%= etu.getGroupe().getId() %>"> <%= etu.getGroupe().getNom() %> </a></td></tr></tr>
+						<td> <a href="<%= getServletContext().getContextPath()%>/do/detailsGroupe?id=<%= etu.getGroupe().getId() %>"> <%= etu.getGroupe().getNom() %> </a></td>
+						<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/details?id=<%= etu.getId() %>"> Détails </a></td>
+						<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/confirmationModification?removeEtu=<%= etu.getId() %>"> Supprimer </a></td>
+						<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/modifierEtudiant?id=<%= etu.getId() %>"> Modifier </a></td></tr>
 					<% } %>
 			</table>
 			

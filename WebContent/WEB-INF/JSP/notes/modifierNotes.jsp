@@ -17,8 +17,8 @@
 				<table class="table table-striped table-bordered table-hover dataTable no-footer">
 					<thead><tr><th> Sujet </th><th> Note </th></tr></thead>
 					<% for(Note n : notes) { %>
-						<tr><td><%= n.getModule().getNom() %></td> </td></tr>
-						<tr><td><%= n.getNom() %> </td><td><%= n.getNote() %></td></tr>
+						<tr><td><%= n.getModule().getNom() + " : " + n.getNom() %> </td><td><%= n.getNote() %></td>
+						<td><a href="<%= getServletContext().getContextPath()%>/do/confirmationModification?removeNote=<%= n.getId() %>"> Supprimer </a></td></tr>
 					<% } %>
 				</table>
 			</div>

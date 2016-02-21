@@ -3,7 +3,6 @@
 	
 	<body>
 		<jsp:include page="<%= getServletContext().getInitParameter(\"entetedepage\")%>"/>
-
 		 <div id="page-wrapper">
 		 <div class="row">
                 <div class="col-lg-12">
@@ -13,9 +12,7 @@
           </div>
             <!-- /.row -->
 			<jsp:include page="<%=content%>" />
-			<jsp:include page="<%= getServletContext().getInitParameter(\"pieddepage\")%>"/>
-
 		</div>
-
+		<jsp:include page="<%= getServletContext().getInitParameter(\"pieddepage\")%>"/>
 	</body>
 </html>

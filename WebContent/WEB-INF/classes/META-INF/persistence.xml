@@ -22,7 +22,7 @@
             <!-- url pointant : -->
             <!--  en SqlLite, sur un fichier de votre arborescence (en windows c:/etc...) -->
             <!--  en MySql, sur une url du serveur par exemple en local http;//localhost:3306 -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:/Users/raffennn/DEV/projetEtape4/WebContent/WEB-INF/data/SIL4ProjetJPAsqlite8"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:/Users/raffennn/DEV/projetEtape4/WebContent/WEB-INF/data/SIL4ProjetJPAsqlite11"/>
 			<property name="javax.persistence.jdbc.user" value=""/>
 			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
 			

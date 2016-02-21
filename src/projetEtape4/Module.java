@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +30,7 @@ public class Module implements Serializable {
 	@Column(nullable=false) 
 	private int coeff;
 	
-	@OneToMany(mappedBy="module", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="module", fetch=FetchType.LAZY, cascade={CascadeType.REMOVE})
 	private List<Note> notes;
 	
 	@ManyToMany(mappedBy="modules", fetch=FetchType.LAZY)	

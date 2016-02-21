@@ -49,12 +49,13 @@
 	    <div class="navbar-default sidebar" role="navigation">
 	        <div class="sidebar-nav navbar-collapse">
 	            <ul class="nav" id="side-menu">
+	                
 	                <li>
-	                    <a href="all"><i class="fa  fa-group fa-fw"></i> Liste de tous les étudiants</a>
-	                </li>
-	                <li>
-	                    <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Etudiants <span class="fa arrow"></span></a>
+	                    <a href="#"><i class="fa fa-group fa-fw"></i> Etudiants <span class="fa arrow"></span></a>
 	                    <ul class="nav nav-second-level">
+		                    <li>
+		                    	<a href="all"></i> Liste de tous les étudiants</a>
+		                	</li>
 	                        <li>
 	                            <a href="ajouterEtudiant"> Créer un étudiant </a>
 	                        </li>
@@ -77,7 +78,7 @@
 		                        </li>
 	                    	<% } %>
 	                        <li>
-	                            <a href="#"> Modules <span class="fa arrow"></span></a>
+	                            <a href="#"><i class="fa  fa-folder-open fa-fw"></i> Modules <span class="fa arrow"></span></a>
 	                            <ul class="nav nav-third-level">
 	                                <li>
 	                                    <a href="consultationModules">Liste des modules</a>

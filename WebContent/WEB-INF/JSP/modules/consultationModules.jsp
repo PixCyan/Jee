@@ -22,6 +22,7 @@
 								%><a href="<%= getServletContext().getContextPath()%>/do/detailsGroupe?id=<%= g.getId() %>"> <%= g.getNom() + "  " %></a>
 							<% } %>
 							</td>
+							<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/confirmationModification?removeModule=<%= m.getId() %>"> Supprimer </a></td>
 							</tr>
 						<% } %>
 				</table>

@@ -38,6 +38,7 @@ public class Controleur extends HttpServlet{
 	private String urlAjouterNote;
 	private String urlAjouterModule;
 	private String urlAjouterEtudiant;
+	private String urlModifierEtudiant;
 	
 	//Initialisation de la servlet
 	public void init() throws ServletException {
@@ -57,6 +58,7 @@ public class Controleur extends HttpServlet{
 		urlAjouterNote = getServletConfig().getInitParameter("ajouterNote");
 		urlAjouterModule = getServletConfig().getInitParameter("ajouterModule");
 		urlAjouterEtudiant = getServletConfig().getInitParameter("ajouterEtudiant");
+		urlModifierEtudiant = getServletConfig().getInitParameter("modifierEtudiant");
 		
 		// CrÃ©ation de la factory permettant la crÃ©ation d'EntityManager
 		// (gestion des transactions)
@@ -64,58 +66,8 @@ public class Controleur extends HttpServlet{
 
 		///// INITIALISATION DE LA BD		
 		if(GroupeDAO.getAll().isEmpty()){
-			// Creation des groupes
-			Groupe MIAM = GroupeDAO.create("MIAM");
-			Groupe SIMO = GroupeDAO.create("SIMO");
-			Groupe MESSI = GroupeDAO.create("MESSI");
-
-			// Creation des étudiants
-			EtudiantDAO.create("Francis", "Brunet-Manquat", MIAM);
-			EtudiantDAO.create("Philippe", "Martin", MIAM);
-			EtudiantDAO.create("Mario", "Cortes-Cornax", MIAM);
-			EtudiantDAO.create("Françoise", "Coat", SIMO);
-			EtudiantDAO.create("Laurent", "Bonnaud", MESSI);
-			EtudiantDAO.create("Sébastien", "Bourdon", MESSI);
-			EtudiantDAO.create("Mathieu", "Gatumel", SIMO);
-			
-			//Création de modules :
-			Module m1 = ModuleDAO.create("Programmaion PHP", "Apprendre la programmation en langage PHP", 20);
-			Module m2 = ModuleDAO.create("Programmation en Python", "Apprendre à programmer en Python", 20);
-			Module m3 = ModuleDAO.create("Référencement web", "Référencement web", 23);
-			Module m4 = ModuleDAO.create("Maths", "Cours de Maths", 24);
-			Module m5 = ModuleDAO.create("Programmation J2EE", "Apprendre à programmer en langage J2EE", 22);
-			Module m6 = ModuleDAO.create("SI", "Cours de Systèmes d'informations",26);
-			
-			EntityManager em = GestionFactory.factory.createEntityManager();
-			em.getTransaction().begin();
-		
-			m1.getGroupes().add(MIAM);
-			m1.getGroupes().add(SIMO);
-			m2.getGroupes().add(MESSI);
-			m3.getGroupes().add(SIMO);
-			m3.getGroupes().add(MIAM);
-			m4.getGroupes().add(MESSI);
-			m4.getGroupes().add(MIAM);
-			m5.getGroupes().add(SIMO);
-			m6.getGroupes().add(SIMO);
-			
-			MIAM.getModules().add(m1);
-			MIAM.getModules().add(m3);
-			MIAM.getModules().add(m4);
-			MESSI.getModules().add(m2);
-			MESSI.getModules().add(m4);
-			SIMO.getModules().add(m5);
-			SIMO.getModules().add(m6);
-			SIMO.getModules().add(m1);
-			SIMO.getModules().add(m3);
-			
-			em.merge(MIAM);
-			em.merge(SIMO);
-			em.merge(MESSI);
-			em.getTransaction().commit();
-			em.close();
-		}
-			
+			this.initBDD();
+		}	
 	}
 
 	@Override
@@ -176,7 +128,19 @@ public class Controleur extends HttpServlet{
 			showAjouterModule(request, response);
 		} else if(methode.equals("get") && action.equals("/ajouterEtudiant")) {
 			showAjouterEtudiant(request, response);
+		} else if(methode.equals("get") && action.equals("/modifierEtudiant")) {
+			showModifierEtudiant(request, response);
 		}
+	}
+	
+	private void showModifierEtudiant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = request.getParameter("id");
+		Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(id));
+		request.setAttribute("etudiant", etudiant);
+		request.setAttribute("content", urlModifierEtudiant);
+
+		// Transfert le controle à une autre servlet
+		loadJSP(urlTemplate, request, response);
 	}
 	
 	private void showAjouterEtudiant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -289,6 +253,41 @@ public class Controleur extends HttpServlet{
 			}	
 			ModuleDAO.addGroupes(groups, module);		
 			request.setAttribute("modif", true);
+		} else if(request.getParameter("removeEtu") != null) {
+			String id = request.getParameter("removeEtu");
+			EtudiantDAO.remove(Integer.parseInt(id));
+			request.setAttribute("modif", true);
+		} else if(request.getParameter("removeModule") != null && !request.getParameter("removeModule").isEmpty()) {
+			String id = request.getParameter("removeModule");
+			//cascade type.REMOVE dans module ne semble pas fonctionner ou je l'ai mal compris
+			Module module = ModuleDAO.retrieveById(Integer.parseInt(id));
+			List<Note> notes = module.getNotes();
+			for(Note n : notes) {
+				NoteDAO.remove(n);
+			}
+			ModuleDAO.remove(module);
+			request.setAttribute("modif", true);
+		} else if(request.getParameter("removeNote") != null && !request.getParameter("removeNote").isEmpty()) {
+			String id = request.getParameter("removeNote");
+			NoteDAO.remove(Integer.parseInt(id));
+			request.setAttribute("modif", true);
+		} else if(request.getParameter("modifEtu") != null && !request.getParameter("modifEtu").isEmpty()) {
+			String id = request.getParameter("modifEtu");
+			Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(id));
+			if(request.getParameter("modifNom") != null && !request.getParameter("modifNom").isEmpty()) {
+				String nom =request.getParameter("modifNom");
+				etudiant.setNom(nom);
+			}
+			if(request.getParameter("modifPrenom") != null && !request.getParameter("modifPrenom").isEmpty()) {
+				String prenom = request.getParameter("modifPrenom");
+				etudiant.setPrenom(prenom);
+			}
+			if(request.getParameter("modifAbs") != null && !request.getParameter("modifAbs").isEmpty()) {
+				String abs = request.getParameter("modifAbs");
+				etudiant.setNbAbsences(Integer.parseInt(abs));
+			}	
+			EtudiantDAO.update(etudiant);
+			request.setAttribute("modif", true);
 		}
 		
 		
@@ -305,6 +304,9 @@ public class Controleur extends HttpServlet{
 		//this.etudiants = GestionFactory.getEtudiants();
 		String id = request.getParameter("id");
 		Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(id));
+		List<Note> notes = etudiant.getNotes();
+		request.setAttribute("notes", notes);
+		
 		request.setAttribute("etudiant", etudiant);
 		request.setAttribute("content", urlDetails);
 
@@ -433,5 +435,58 @@ public class Controleur extends HttpServlet{
 		ServletContext sc = getServletContext();
 		RequestDispatcher rd = sc.getRequestDispatcher(url);
 		rd.forward(request, response);
+	}
+	
+	private void initBDD() {
+		// Creation des groupes
+		Groupe MIAM = GroupeDAO.create("MIAM");
+		Groupe SIMO = GroupeDAO.create("SIMO");
+		Groupe MESSI = GroupeDAO.create("MESSI");
+
+		// Creation des étudiants
+		EtudiantDAO.create("Francis", "Brunet-Manquat", MIAM);
+		EtudiantDAO.create("Philippe", "Martin", MIAM);
+		EtudiantDAO.create("Mario", "Cortes-Cornax", MIAM);
+		EtudiantDAO.create("Françoise", "Coat", SIMO);
+		EtudiantDAO.create("Laurent", "Bonnaud", MESSI);
+		EtudiantDAO.create("Sébastien", "Bourdon", MESSI);
+		EtudiantDAO.create("Mathieu", "Gatumel", SIMO);
+		
+		//Création de modules :
+		Module m1 = ModuleDAO.create("Programmaion PHP", "Apprendre la programmation en PHP", 20);
+		Module m2 = ModuleDAO.create("Programmation en Python", "Apprendre à programmer en Python", 20);
+		Module m3 = ModuleDAO.create("Référencement web", "Référencement web", 23);
+		Module m4 = ModuleDAO.create("Maths", "Cours de Maths", 24);
+		Module m5 = ModuleDAO.create("Programmation web en Java", "Programmation web en Java", 22);
+		Module m6 = ModuleDAO.create("SI", "Cours de Systèmes d'informations",26);
+		
+		EntityManager em = GestionFactory.factory.createEntityManager();
+		em.getTransaction().begin();
+	
+		m1.getGroupes().add(MIAM);
+		m1.getGroupes().add(SIMO);
+		m2.getGroupes().add(MESSI);
+		m3.getGroupes().add(SIMO);
+		m3.getGroupes().add(MIAM);
+		m4.getGroupes().add(MESSI);
+		m4.getGroupes().add(MIAM);
+		m5.getGroupes().add(SIMO);
+		m6.getGroupes().add(SIMO);
+		
+		MIAM.getModules().add(m1);
+		MIAM.getModules().add(m3);
+		MIAM.getModules().add(m4);
+		MESSI.getModules().add(m2);
+		MESSI.getModules().add(m4);
+		SIMO.getModules().add(m5);
+		SIMO.getModules().add(m6);
+		SIMO.getModules().add(m1);
+		SIMO.getModules().add(m3);
+		
+		em.merge(MIAM);
+		em.merge(SIMO);
+		em.merge(MESSI);
+		em.getTransaction().commit();
+		em.close();
 	}
 }
