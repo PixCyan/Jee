@@ -199,7 +199,7 @@ public class Controleur extends HttpServlet{
 	}
 	
 	private void showAjouterNote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getParameter("id") != null) {
+		if(request.getParameter("id") != null && !request.getParameter("id").isEmpty()) {
 			Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(request.getParameter("id")));
 			List<Module> modules = GroupeDAO.retrieveById(etudiant.getGroupe().getId()).getModules();
 			
@@ -254,19 +254,29 @@ public class Controleur extends HttpServlet{
 	private void showConfirmationModif(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//-- Afficher tous les étudiants et leur moyenne
 		//this.etudiants = GestionFactory.getEtudiants();
-		if(request.getParameter("sujetNote") != null) {
-			String id = request.getParameter("id");
-			EntityManager em = GestionFactory.factory.createEntityManager();
-			Etudiant etu = EtudiantDAO.retrieveById(Integer.parseInt(id));
-			
-			String sujetNote = request.getParameter("sujetNote");
-			String note = request.getParameter("note");
-			String mod = request.getParameter("module");
-			Module module = ModuleDAO.retrieveById(Integer.parseInt(mod));
-			
-			EtudiantDAO.addNote(sujetNote, Integer.parseInt(note), module, etu);
-			request.setAttribute("warning", "");
-			request.setAttribute("modif", true);
+		if(request.getParameter("sujetNote") != null && !request.getParameter("sujetNote").isEmpty()
+				&& request.getParameter("note") != null && !request.getParameter("note").isEmpty()
+				&& request.getParameter("id") != null && !request.getParameter("id").isEmpty()
+				&& request.getParameter("module") != null && !request.getParameter("module").isEmpty()) {
+			int note = Integer.parseInt(request.getParameter("note"));
+			if(note <= 0 || note > 20) {
+				request.setAttribute("warning", "La note doit être comprise entre 0 et 20 !");
+				request.setAttribute("modif", false);
+			} else {
+				String id = request.getParameter("id");
+				EntityManager em = GestionFactory.factory.createEntityManager();
+				Etudiant etu = EtudiantDAO.retrieveById(Integer.parseInt(id));
+				
+				String sujetNote = request.getParameter("sujetNote");
+				
+				String mod = request.getParameter("module");
+				Module module = ModuleDAO.retrieveById(Integer.parseInt(mod));
+				
+				EtudiantDAO.addNote(sujetNote, note, module, etu);
+				
+				request.setAttribute("warning", "");
+				request.setAttribute("modif", true);
+			}
 		} else if(request.getParameter("prenom") != null && !request.getParameter("prenom").isEmpty()
 				&& request.getParameter("nom") != null && !request.getParameter("nom").isEmpty()
 				&& request.getParameter("groupe") != null && !request.getParameter("groupe").isEmpty()) {

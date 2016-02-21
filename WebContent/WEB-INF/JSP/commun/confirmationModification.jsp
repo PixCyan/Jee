@@ -8,7 +8,7 @@
 		
 		<% if(modif) { %>
 		<div class="alert alert-success">
-			<p> Vos changement ont bien été pris en compte </p>
+			<p> Vos changements ont bien été pris en compte </p>
 		</div>
 		<% } else { %>
 		<div class="alert alert-danger">
