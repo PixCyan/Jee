@@ -369,10 +369,8 @@ public class Controleur extends HttpServlet{
 				request.setAttribute("modif", true);
 				request.setAttribute("warning", "");
 			}
-		}
-		
-		
-		else {
+		} else {
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", false);
 		}
 		request.setAttribute("content", urlConfirmationModification);

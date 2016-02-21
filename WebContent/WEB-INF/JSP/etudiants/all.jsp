@@ -7,7 +7,7 @@
 	<div class="col-lg-12">
 		<article class="panel-heading">
 			<h3> Liste des étudiants</h3>
-			<a href="<%= getServletContext().getContextPath()%>/do/ajouterEtudiant">Créer un étudiant</a>
+			<button class="btn btn-primary" onclick="location.href='<%= getServletContext().getContextPath()%>/do/ajouterEtudiant'">Créer un étudiant</button>
 		</article>
 		<div class="panel-body">
 			<table class="table table-striped table-bordered table-hover dataTable no-footer">

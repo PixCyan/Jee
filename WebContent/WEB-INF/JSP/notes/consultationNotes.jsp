@@ -7,7 +7,6 @@
 		
 		<article class="panel-heading">
 			<h3> Liste des étudiants et leur moyenne</h3>
-			<a href="<%= getServletContext().getContextPath()%>/do/ajouterEtudiant">Créer un étudiant</a>
 		</article>
 		<div class="panel-body">
 			<div class="panel-body">
@@ -24,11 +23,8 @@
 							<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/modifierNotes?id=<%= etu.getId() %>"> Consulter / Modifier </a></td>
 							<td class="celModif"><a href="<%= getServletContext().getContextPath()%>/do/details?id=<%= etu.getId() %>"> Détails </a></td></tr>
 						<% } %>
+						<tr><td> Moyenne globale </td> <td> <%if(nbNote != 0) { %> <%= moyenne/nbNote %> <% } %></td></tr>
 				</table>
-				
-				<div> 
-					<p> Moyenne générale : <%= moyenne/nbNote %></p>
-				</div>
 			</div>
 		</div>
 	</div>
