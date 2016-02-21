@@ -28,7 +28,7 @@
 			</table>
 			
 			<div> 
-				<p> Moyenne du groupe : <%= moyenne/nbNote %></p>
+				<p> Moyenne du groupe : <%if(nbNote != 0) { %> <%= moyenne/nbNote %> <% } %></p>
 			</div>
 		</article>
 	</div>

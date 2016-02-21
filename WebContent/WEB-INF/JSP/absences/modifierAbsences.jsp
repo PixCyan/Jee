@@ -10,11 +10,8 @@
 		<p> Nom : <%= etudiant.getNom() %><br/>
 		Prenom : <%= etudiant.getPrenom() %><br/>
 		Absence(s) : </p>
+		<a href="<%= getServletContext().getContextPath()%>/do/confirmationModification?abs=1">Ajouter une absence</a>
+		<a href="<%= getServletContext().getContextPath()%>/do/confirmationModification?abs=2">Retirer une absence</a>
 		
-		<form action="confirmationModification">
-		 <input type="text" name="abs" value="<%= etudiant.getAbs() %>"/>
-		 <input hidden=true type="text" name="id" value="<%= etudiant.getId() %>"/>
-		  <input type="submit" value="Modifier le nombre d'absence">
-		</form>
 	</div>
 </div>

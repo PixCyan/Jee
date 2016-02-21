@@ -25,6 +25,23 @@
 		<param-name>pieddepage</param-name>
 		<param-value>/WEB-INF/JSP/commun/piedDePage.jsp</param-value>
 	</context-param>
+	<context-param>
+		<param-name>all</param-name>
+		<param-value>/WEB-INF/JSP/etudiants/all.jsp</param-value>
+	</context-param>
+	<context-param>
+		<param-name>groupes</param-name>
+		<param-value>/WEB-INF/JSP/groupes/consultationGroupes.jsp</param-value>
+	</context-param>
+	<context-param>
+		<param-name>consultationModules</param-name>
+		<param-value>/WEB-INF/JSP/modules/consultationModules.jsp</param-value>
+	</context-param>
+	<context-param>
+		<param-name>modifierNotes</param-name>
+			<param-value>/WEB-INF/JSP/notes/modifierNotes.jsp</param-value>
+	</context-param>
+	
 
 	<!--  Servlet : traitementDetail -->
 	<servlet>
@@ -97,6 +114,14 @@
 		<init-param>
 			<param-name>modifierEtudiant</param-name>
 			<param-value>/WEB-INF/JSP/etudiants/modifierEtudiant.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>modifierNote</param-name>
+			<param-value>/WEB-INF/JSP/notes/modifierNote.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ajouterGroupe</param-name>
+			<param-value>/WEB-INF/JSP/groupes/ajouterGroupe.jsp</param-value>
 		</init-param>
 	</servlet>
 	

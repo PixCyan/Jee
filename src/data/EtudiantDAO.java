@@ -74,14 +74,9 @@ public class EtudiantDAO {
 		
 		// Creation de l'entity manager
 		EntityManager em = GestionFactory.factory.createEntityManager();
-		
 		// Find
 		Etudiant etudiant = em.find(Etudiant.class, id);
-		
-		//
 		em.getTransaction().begin();
-
-		//
 		int absencesInitiales = etudiant.getAbs();
 		etudiant.setNbAbsences(absencesInitiales + absencesAAjouter);
 		
@@ -93,6 +88,31 @@ public class EtudiantDAO {
 		
 		return etudiant;
 	}
+	
+	public static Etudiant removeAbsences(int id, int absencesAAjouter) {
+		
+		// Creation de l'entity manager
+		EntityManager em = GestionFactory.factory.createEntityManager();
+		
+		// Find
+		Etudiant etudiant = em.find(Etudiant.class, id);
+		
+		//
+		em.getTransaction().begin();
+
+		//
+		int absencesInitiales = etudiant.getAbs();
+		etudiant.setNbAbsences(absencesInitiales - absencesAAjouter);
+		
+		// Commit
+		em.getTransaction().commit();
+
+		// Close the entity manager
+		em.close();
+		
+		return etudiant;
+	}
+	
 	
 
 	public static void remove(Etudiant etudiant) {

@@ -49,7 +49,9 @@
 	    <div class="navbar-default sidebar" role="navigation">
 	        <div class="sidebar-nav navbar-collapse">
 	            <ul class="nav" id="side-menu">
-	                
+	                <li>
+		                    	<a href="accueil"></i> Accueil </a>
+		            </li>
 	                <li>
 	                    <a href="#"><i class="fa fa-group fa-fw"></i> Etudiants <span class="fa arrow"></span></a>
 	                    <ul class="nav nav-second-level">
@@ -72,6 +74,12 @@
 	                <li>
 	                    <a href="#"><i class="fa fa-sitemap fa-fw"></i> Groupes <span class="fa arrow"></span></a>
 	                    <ul class="nav nav-second-level">
+	                    		<li>
+		                            <a href="<%= getServletContext().getContextPath()%>/do/groupes">Gérer les groupes</a>
+		                        </li>
+	                    		<li>
+		                            <a href="<%= getServletContext().getContextPath()%>/do/ajouterGroupe">Créer un groupe</a>
+		                        </li>
 	                    	<% for(Groupe g : GroupeDAO.getAll()) { %>
 		                    	<li>
 		                            <a href="<%= getServletContext().getContextPath()%>/do/detailsGroupe?id=<%= g.getId() %>"> <%= g.getNom() %></a>

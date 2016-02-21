@@ -6,11 +6,10 @@
 
 <div class="row">
 	<div class="col-lg-12">
-		<h3> Modules </h3>
-		
-		<a href="<%= getServletContext().getContextPath()%>/do/ajouterModule">Créer un module</a>
-		
 		<article class="panel-heading">
+			<h3> Modules </h3>
+			<a href="<%= getServletContext().getContextPath()%>/do/ajouterModule">Créer un module</a>
+		</article>
 			<article class="panel-body">
 				<table class="table table-striped table-bordered table-hover dataTable no-footer">
 					<thead><tr><th> Module </th><th> Description </th><th> Coeff </th><th>Groupes</th></tr></thead>
@@ -27,6 +26,5 @@
 						<% } %>
 				</table>
 			</article>
-		</article>
 	</div>
 </div>

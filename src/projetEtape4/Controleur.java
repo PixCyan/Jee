@@ -39,6 +39,8 @@ public class Controleur extends HttpServlet{
 	private String urlAjouterModule;
 	private String urlAjouterEtudiant;
 	private String urlModifierEtudiant;
+	private String urlModifierNote;
+	private String urlAjouterGroupe;
 	
 	//Initialisation de la servlet
 	public void init() throws ServletException {
@@ -59,6 +61,8 @@ public class Controleur extends HttpServlet{
 		urlAjouterModule = getServletConfig().getInitParameter("ajouterModule");
 		urlAjouterEtudiant = getServletConfig().getInitParameter("ajouterEtudiant");
 		urlModifierEtudiant = getServletConfig().getInitParameter("modifierEtudiant");
+		urlModifierNote = getServletConfig().getInitParameter("modifierNote");
+		urlAjouterGroupe = getServletConfig().getInitParameter("ajouterGroupe");
 		
 		// CrÃ©ation de la factory permettant la crÃ©ation d'EntityManager
 		// (gestion des transactions)
@@ -130,8 +134,37 @@ public class Controleur extends HttpServlet{
 			showAjouterEtudiant(request, response);
 		} else if(methode.equals("get") && action.equals("/modifierEtudiant")) {
 			showModifierEtudiant(request, response);
+		} else if(methode.equals("get") && action.equals("/modifierNote")) {
+			showModifierNote(request, response);
+		} else if(methode.equals("get") && action.equals("/ajouterGroupe")) {
+			showAjouterGroupe(request, response);
 		}
 	}
+	
+	private void showAjouterGroupe(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			List<Module> modules = ModuleDAO.getAll();
+			
+			request.setAttribute("modules", modules);
+			request.setAttribute("content", urlAjouterGroupe);
+			// Transfert le controle à une autre servlet
+			loadJSP(urlTemplate, request, response);
+	}
+	
+	private void showModifierNote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("idNote") != null && !request.getParameter("idNote").isEmpty()) {
+			Note note = NoteDAO.retrieveById(Integer.parseInt(request.getParameter("idNote")));
+			request.setAttribute("note", note);
+			Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(request.getParameter("id")));
+			List<Module> modules = GroupeDAO.retrieveById(etudiant.getGroupe().getId()).getModules();
+			request.setAttribute("modules", modules);
+			request.setAttribute("etudiant", etudiant);
+			request.setAttribute("content", urlModifierNote);
+
+			// Transfert le controle à une autre servlet
+			loadJSP(urlTemplate, request, response);
+		}
+	}
+	
 	
 	private void showModifierEtudiant(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("id");
@@ -202,13 +235,17 @@ public class Controleur extends HttpServlet{
 		// Transfert le controle à une autre servlet
 		loadJSP(urlTemplate, request, response);
 	}
-		
-	private void showConfirmationModif(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//-- Afficher tous les étudiants et leur moyenne
-		//this.etudiants = GestionFactory.getEtudiants();
-		if(request.getParameter("abs") != null) {
-			String id = request.getParameter("id");
-			EntityManager em = GestionFactory.factory.createEntityManager();
+	
+	private void showModifierAbs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("abs") != null && !request.getParameter("abs").isEmpty()) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			int absence = Integer.parseInt(request.getParameter("abs"));
+			if(absence == 1) {
+				EtudiantDAO.addAbsences(id, absence);
+			} else {
+				EtudiantDAO.removeAbsences(id, absence);
+			}
+			/*EntityManager em = GestionFactory.factory.createEntityManager();
 			em.getTransaction().begin();
 			Etudiant etudiant = EtudiantDAO.retrieveById(Integer.parseInt(id));
 			etudiant.setNbAbsences(Integer.parseInt(request.getParameter("abs")));
@@ -216,9 +253,18 @@ public class Controleur extends HttpServlet{
 			// Commit
 			em.getTransaction().commit();
 			// Close the entity manager
-			em.close();
-			request.setAttribute("modif", true);
-		} else if(request.getParameter("sujetNote") != null) {
+			em.close();*/
+			request.setAttribute("content", urlConfirmationModification);
+			// Transfert le controle à une autre servlet
+			loadJSP(urlTemplate, request, response);
+		}
+		
+	}
+		
+	private void showConfirmationModif(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//-- Afficher tous les étudiants et leur moyenne
+		//this.etudiants = GestionFactory.getEtudiants();
+		if(request.getParameter("sujetNote") != null) {
 			String id = request.getParameter("id");
 			EntityManager em = GestionFactory.factory.createEntityManager();
 			Etudiant etu = EtudiantDAO.retrieveById(Integer.parseInt(id));
@@ -229,6 +275,7 @@ public class Controleur extends HttpServlet{
 			Module module = ModuleDAO.retrieveById(Integer.parseInt(mod));
 			
 			EtudiantDAO.addNote(sujetNote, Integer.parseInt(note), module, etu);
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
 		} else if(request.getParameter("prenom") != null) {
 			String nom = request.getParameter("nom");
@@ -237,6 +284,7 @@ public class Controleur extends HttpServlet{
 			Groupe groupe = GroupeDAO.retrieveById(Integer.parseInt(id));
 			
 			EtudiantDAO.create(prenom, nom, groupe);
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
 		} else if(request.getParameter("nomModule") != null) {
 			String nomModule = request.getParameter("nomModule");
@@ -251,11 +299,13 @@ public class Controleur extends HttpServlet{
 					groups.add(gr);
 				}
 			}	
-			ModuleDAO.addGroupes(groups, module);		
+			ModuleDAO.addGroupes(groups, module);
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
 		} else if(request.getParameter("removeEtu") != null) {
 			String id = request.getParameter("removeEtu");
 			EtudiantDAO.remove(Integer.parseInt(id));
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
 		} else if(request.getParameter("removeModule") != null && !request.getParameter("removeModule").isEmpty()) {
 			String id = request.getParameter("removeModule");
@@ -266,10 +316,12 @@ public class Controleur extends HttpServlet{
 				NoteDAO.remove(n);
 			}
 			ModuleDAO.remove(module);
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
 		} else if(request.getParameter("removeNote") != null && !request.getParameter("removeNote").isEmpty()) {
 			String id = request.getParameter("removeNote");
 			NoteDAO.remove(Integer.parseInt(id));
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
 		} else if(request.getParameter("modifEtu") != null && !request.getParameter("modifEtu").isEmpty()) {
 			String id = request.getParameter("modifEtu");
@@ -287,7 +339,46 @@ public class Controleur extends HttpServlet{
 				etudiant.setNbAbsences(Integer.parseInt(abs));
 			}	
 			EtudiantDAO.update(etudiant);
+			request.setAttribute("warning", "");
 			request.setAttribute("modif", true);
+		} else if(request.getParameter("nomGroupe") != null && !request.getParameter("nomGroupe").isEmpty()) {
+			String nomGroupe = request.getParameter("nomGroupe");
+			boolean groupeExist = false;
+			for(Groupe g : GroupeDAO.getAll()) {
+				if(g.getNom().equals(nomGroupe)) {
+					groupeExist = true;
+					break;
+				}
+			}
+			if(groupeExist) {
+				request.setAttribute("warning", "Ce groupe existe déjà");
+				request.setAttribute("modif", false);
+			} else {
+				Groupe groupe = GroupeDAO.create(request.getParameter("nomGroupe"));
+				List<Module> modulesGroupe = new ArrayList<>();
+				for(Module m : ModuleDAO.getAll()) {
+					if(request.getParameter(m.getNom()) != null && !request.getParameter(m.getNom()).isEmpty()) {
+						modulesGroupe.add(m);
+					}
+				}
+				if(!modulesGroupe.isEmpty()) {
+					GroupeDAO.addModules(modulesGroupe, groupe);
+				}
+				request.setAttribute("warning", "");
+				request.setAttribute("modif", true);	
+			}
+
+		} else if(request.getParameter("removeGroupe") != null && !request.getParameter("removeGroupe").isEmpty()) {
+			Groupe groupe = GroupeDAO.retrieveById(Integer.parseInt(request.getParameter("removeGroupe")));
+			if(!groupe.getEtudiants().isEmpty()) {
+				request.setAttribute("warning", "Ce groupe contient des étudiants, il ne peut pas être supprimé !");
+				request.setAttribute("modif", false);
+			} else {
+				System.out.println(groupe.getNom());
+				GroupeDAO.remove(groupe);
+				request.setAttribute("modif", true);
+				request.setAttribute("warning", "");
+			}
 		}
 		
 		
@@ -404,6 +495,13 @@ public class Controleur extends HttpServlet{
 	}
 	
 	private void showAccueil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Groupe> groupes = GroupeDAO.getAll();
+		List<Module> modules = ModuleDAO.getAll();
+		List<Etudiant> etudiants = EtudiantDAO.getAll();
+		
+		request.setAttribute("etudiants", etudiants);
+		request.setAttribute("groupes", groupes);
+		request.setAttribute("modules", modules);
 		request.setAttribute("content", urlAccueil);
 		
 		// Transfert le controle à une autre servlet
